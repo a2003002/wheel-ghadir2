@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>گردونه شانس - مجمع فرهنگی مذهبی امام علی (ع)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', 'Vazir', 'Arial', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0a4d2a 0%, #1a6d3a 50%, #0d3d20 100%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: gold;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+            box-shadow: 0 0 10px gold;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+        .moon {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #fff9c4, #fff176);
+            border-radius: 50%;
+            box-shadow: 0 0 30px gold;
+            animation: glow 3s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px gold; }
+            50% { box-shadow: 0 0 50px gold; }
+        }
+        .islamic-pattern {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: repeating-linear-gradient(45deg, rgba(255,215,0,0.1), rgba(255,215,0,0.1) 20px, rgba(255,215,0,0.2) 20px, rgba(255,215,0,0.2) 40px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1400px;
+            margin: 20px auto;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255,215,0,0.5);
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .title-container h1 {
+            color: #1a472a;
+            font-size: 32px;
+            border-bottom: 3px solid #ffd700;
+            display: inline-block;
+            padding-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255,215,0,0.3);
+        }
+        .title-container p {
+            color: #2d6a4f;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .wheel-section {
+            flex: 2;
+            min-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, #f0f7e6, #e8f5e9);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #1a472a;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            margin: 20px auto;
+            filter: drop-shadow(0 0 20px rgba(255,215,0,0.5));
+            animation: glowPulse 3s infinite;
+        }
+        @keyframes glowPulse {
+            0% { filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
+            50% { filter: drop-shadow(0 0 30px rgba(255,215,0,0.9)); }
+            100% { filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 5px solid #ffd700;
+        }
+        .pointer {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-top: 70px solid #ffd700;
+            z-index: 10;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffd700, #ff9800);
+            border-radius: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a472a;
+            animation: blink 0.5s ease-in-out infinite;
+            border: 2px solid #fff;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #ffd700, #ff9800);
+            color: #1a472a;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 150px;
+            border: 2px solid #fff;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .last-winners {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #ffd700;
+            text-align: center;
+        }
+        .last-winners h3 {
+            color: #1a472a;
+            margin-bottom: 10px;
+        }
+        .winner-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .winner-badge {
+            background: white;
+            border-radius: 20px;
+            padding: 8px 15px;
+            border-right: 4px solid #ffd700;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .admin-panel {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 2px solid #ffd700;
+            display: none;
+        }
+        .admin-panel.visible {
+            display: block;
+        }
+        .prize-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .prize-item {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ffd700;
+        }
+        .delete-prize {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .add-prize {
+            margin-top: 15px;
+        }
+        #newPrize {
+            width: 200px;
+            display: inline-block;
+            margin-left: 10px;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: linear-gradient(135deg, #ffd700, #ff9800);
+            color: #1a472a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .download-btn {
+            background: #4caf50;
+            color: white;
+        }
+        .message {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        .success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 3px solid #ffd700;
+        }
+        .login-box input {
+            margin: 15px 0;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+        }
+        @media (max-width: 1200px) {
+            .wheel-container { width: 500px; height: 500px; }
+            .result { font-size: 20px; }
+        }
+        @media (max-width: 768px) {
+            .wheel-container { width: 350px; height: 350px; }
+            .main-content { flex-direction: column; }
+            .wheel-section { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="moon"></div>
+<div class="islamic-pattern"></div>
+
+<div class="container">
+    <div class="title-container">
+        <h1>عید غدیر خم - مولا علی (ع)</h1>
+        <p>مجمع فرهنگی مذهبی امام علی (ع) - گردونه شانس ویژه جشن ولایت</p>
+    </div>
+
+    <div class="main-content">
+        <div class="wheel-section">
+            <div class="wheel-container">
+                <div class="pointer"></div>
+                <canvas id="wheelCanvas" width="800" height="800"></canvas>
+            </div>
+            <div class="result" id="result">
+                یا علی مدد - گردونه را بچرخانید
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 style="text-align:center; margin-bottom:20px;">📝 ثبت نام در جشن غدیر</h3>
+            <div class="form-group">
+                <label>نام:</label>
+                <input type="text" id="firstName" placeholder="نام خود را وارد کنید">
+            </div>
+            <div class="form-group">
+                <label>نام خانوادگی:</label>
+                <input type="text" id="lastName" placeholder="نام خانوادگی خود را وارد کنید">
+            </div>
+            <div class="form-group">
+                <label>شماره موبایل:</label>
+                <input type="tel" id="phone" placeholder="09xxxxxxxxx">
+            </div>
+            <button onclick="registerAndSpin()" style="width:100%">🎲 چرخاندن گردونه 🎲</button>
+            <button onclick="showAdminLogin()" style="width:100%; margin-top:10px; background:#6c5ce7;">🔐 ورود ادمین</button>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="totalParticipants">0</div>
+            <div>شرکت کننده</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="totalSpins">0</div>
+            <div>چرخش مبارک</div>
+        </div>
+    </div>
+
+    <div class="last-winners">
+        <h3>🏆 آخرین ۵ برنده 🏆</h3>
+        <div class="winner-list" id="winnerList">هنوز برنده‌ای ثبت نشده</div>
+    </div>
+
+    <div id="adminPanel" class="admin-panel">
+        <h3>🔧 مدیریت جوایز (ادمین)</h3>
+        <div class="prize-list" id="prizeList"></div>
+        <div class="add-prize">
+            <input type="text" id="newPrize" placeholder="نام جایزه جدید">
+            <button onclick="addPrize()">➕ اضافه کردن</button>
+        </div>
+        <button class="download-btn" onclick="downloadData()">📥 دانلود CSV شرکت‌کنندگان</button>
+        <button onclick="resetAllData()" style="background:#ff6b6b">🗑️ ریست کامل داده‌ها</button>
+        <button onclick="exportWinners()" style="background:#f39c12">🏆 خروجی برندگان ویژه</button>
+        <button onclick="hideAdminPanel()" style="background:#999">❌ بستن پنل</button>
+    </div>
+</div>
+
+<script>
+    let prizes = [
+        "ماشین نیسان", "کش مو", "پوچ", "شانس مجدد",
+        "جایزه شانسی", "ظروف آشپزخانه", "تفنگ", "لیزر",
+        "توپ", "جامدادی", "خانه سازی", "راکت",
+        "جایزه نقدی", "بادکنک"
+    ];
+    let participants = [];
+    let spinning = false;
+    let audioContext = null;
+
+    const colors = [
+        '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD',
+        '#FDCB6E', '#E17055', '#A8E6CF', '#FFB347', '#B5EAD7', '#C7CEE6',
+        '#F4A261', '#E76F51', '#6C5CE7', '#00CEC9', '#FF9FF3', '#FECA57'
+    ];
+
+    let wheelCanvas = document.getElementById('wheelCanvas');
+    let ctx = wheelCanvas.getContext('2d');
+    let currentAngle = 0;
+
+    function createStars() {
+        const starsContainer = document.getElementById('stars');
+        for(let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+
+    function playSound(type) {
+        try {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            if(type === 'spin') {
+                oscillator.frequency.value = 440;
+                gainNode.gain.value = 0.1;
+                oscillator.type = 'sine';
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } else if(type === 'win') {
+                oscillator.frequency.value = 880;
+                gainNode.gain.value = 0.2;
+                oscillator.type = 'triangle';
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 1);
+                oscillator.stop(audioContext.currentTime + 1);
+            }
+        } catch(e) {}
+    }
+
+    function showConfetti() {
+        for(let i = 0; i < 150; i++) {
+            const conf = document.createElement('div');
+            conf.style.position = 'fixed';
+            conf.style.left = Math.random() * 100 + '%';
+            conf.style.top = '-20px';
+            conf.style.width = Math.random() * 12 + 5 + 'px';
+            conf.style.height = conf.style.width;
+            conf.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '0%';
+            conf.style.pointerEvents = 'none';
+            conf.style.zIndex = '9999';
+            conf.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+            document.body.appendChild(conf);
+            setTimeout(() => conf.remove(), 4000);
+        }
+        let style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function loadData() {
+        let savedPrizes = localStorage.getItem('wheelPrizes');
+        if (savedPrizes) prizes = JSON.parse(savedPrizes);
+        let savedParticipants = localStorage.getItem('participants');
+        if (savedParticipants) participants = JSON.parse(savedParticipants);
+        drawWheel();
+        displayPrizeList();
+        updateStats();
+        updateLastWinners();
+    }
+
+    function saveData() {
+        localStorage.setItem('wheelPrizes', JSON.stringify(prizes));
+        localStorage.setItem('participants', JSON.stringify(participants));
+        updateStats();
+        updateLastWinners();
+    }
+
+    function updateStats() {
+        document.getElementById('totalParticipants').innerHTML = participants.length;
+        document.getElementById('totalSpins').innerHTML = participants.length;
+    }
+
+    function updateLastWinners() {
+        const container = document.getElementById('winnerList');
+        if (participants.length === 0) {
+            container.innerHTML = 'هنوز برنده‌ای ثبت نشده';
+            return;
+        }
+        let lastFive = [...participants].reverse().slice(0,5);
+        container.innerHTML = lastFive.map(p => `<div class="winner-badge">${p.firstName} ${p.lastName}: ${p.prize}</div>`).join('');
+    }
+
+    function drawWheel() {
+        if (!ctx || prizes.length === 0) return;
+        let size = wheelCanvas.width;
+        let centerX = size/2, centerY = size/2;
+        let radius = size/2;
+        let anglePer = (Math.PI * 2) / prizes.length;
+        ctx.clearRect(0, 0, size, size);
+        
+        for (let i=0; i<prizes.length; i++) {
+            let start = currentAngle + i * anglePer;
+            let end = start + anglePer;
+            ctx.beginPath();
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, start, end);
+            ctx.fill();
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, start, end);
+            ctx.lineTo(centerX, centerY);
+            ctx.stroke();
+            
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(start + anglePer/2);
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 20px Tahoma';
+            let text = prizes[i];
+            let textWidth = ctx.measureText(text).width;
+            let xPos = radius * 0.6 - textWidth/2;
+            ctx.fillText(text, xPos, 10);
+            ctx.restore();
+        }
+        
+        ctx.beginPath();
+        ctx.fillStyle = '#ffd700';
+        ctx.arc(centerX, centerY, 85, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.fillStyle = '#1a472a';
+        ctx.arc(centerX, centerY, 80, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#ffd700';
+        ctx.font = 'bold 18px Tahoma';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('مجمع', centerX, centerY-25);
+        ctx.fillText('فرهنگی مذهبی', centerX, centerY);
+        ctx.fillText('امام علی (ع)', centerX, centerY+25);
+        ctx.fillText('★', centerX, centerY+48);
+    }
+
+    function spinWheel(callback) {
+        if (spinning) return;
+        spinning = true;
+        playSound('spin');
+        let spinAngle = Math.random() * 360 + 1080;
+        let startTime = null;
+        let startAngle = currentAngle;
+        function animate(timestamp) {
+            if (!startTime) startTime = timestamp;
+            let elapsed = timestamp - startTime;
+            let progress = Math.min(1, elapsed / 3500);
+            let easeOut = 1 - Math.pow(1-progress, 3);
+            let angle = startAngle + (spinAngle * easeOut * Math.PI/180);
+            currentAngle = angle % (2*Math.PI);
+            drawWheel();
+            if (progress < 1) requestAnimationFrame(animate);
+            else {
+                spinning = false;
+                playSound('win');
+                let idx = getWinningIndex();
+                callback(prizes[idx]);
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    function getWinningIndex() {
+        let anglePer = (2*Math.PI)/prizes.length;
+        let pointerAngle = (3*Math.PI)/2;
+        let raw = (currentAngle + 2*Math.PI) % (2*Math.PI);
+        let diff = (pointerAngle - raw + 2*Math.PI) % (2*Math.PI);
+        let idx = Math.floor(diff / anglePer);
+        return idx % prizes.length;
+    }
+
+    function registerAndSpin() {
+        let firstName = document.getElementById('firstName').value.trim();
+        let lastName = document.getElementById('lastName').value.trim();
+        let phone = document.getElementById('phone').value.trim();
+        if (!firstName || !lastName || !phone) {
+            showMessage('لطفا تمام فیلدها را پر کنید', 'error');
+            return;
+        }
+        if (!/^09[0-9]{9}$/.test(phone)) {
+            showMessage('شماره موبایل نامعتبر', 'error');
+            return;
+        }
+        let existing = participants.find(p => p.phone === phone);
+        if (existing) {
+            showMessage(`شما قبلاً برنده شدید: ${existing.prize}`, 'error');
+            return;
+        }
+
+        spinWheel((prize) => {
+            if (prize === "شانس مجدد") {
+                showMessage('شانس مجدد! دوباره بچرخانید', 'success');
+                setTimeout(() => registerAndSpin(), 1500);
+                return;
+            }
+            participants.push({
+                firstName, lastName, phone, prize,
+                date: new Date().toLocaleString('fa-IR')
+            });
+            saveData();
+            document.getElementById('result').innerHTML = `مبارک باد! شما برنده شدید: ${prize}`;
+            showMessage(`تبریک! شما برنده ${prize} شدید`, 'success');
+            showConfetti();
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+            document.getElementById('phone').value = '';
+        });
+    }
+
+    function showMessage(msg, type) {
+        let div = document.createElement('div');
+        div.className = `message ${type}`;
+        div.innerHTML = msg;
+        let form = document.querySelector('.form-section');
+        form.insertBefore(div, form.children[4]);
+        setTimeout(() => div.remove(), 3000);
+    }
+
+    function displayPrizeList() {
+        let container = document.getElementById('prizeList');
+        container.innerHTML = '';
+        for (let i = 0; i < prizes.length; i++) {
+            let div = document.createElement('div');
+            div.className = 'prize-item';
+            div.innerHTML = `${prizes[i]} <button class="delete-prize" onclick="removePrize(${i})">✖</button>`;
+            container.appendChild(div);
+        }
+    }
+
+    function addPrize() {
+        let newPrize = document.getElementById('newPrize').value.trim();
+        if (newPrize) {
+            prizes.push(newPrize);
+            saveData();
+            drawWheel();
+            displayPrizeList();
+            document.getElementById('newPrize').value = '';
+            showMessage('جایزه جدید اضافه شد', 'success');
+        }
+    }
+
+    function removePrize(index) {
+        if (prizes.length <= 1) {
+            showMessage('حداقل یک جایزه باید باقی بماند', 'error');
+            return;
+        }
+        prizes.splice(index, 1);
+        saveData();
+        drawWheel();
+        displayPrizeList();
+    }
+
+    function downloadData() {
+        if (participants.length === 0) {
+            alert('هنوز شرکت کننده‌ای ثبت نشده');
+            return;
+        }
+        let csv = '\uFEFFنام,نام خانوادگی,شماره موبایل,جایزه برنده,تاریخ\n';
+        participants.forEach(p => {
+            csv += `"${p.firstName}","${p.lastName}","${p.phone}","${p.prize}","${p.date}"\n`;
+        });
+        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        let link = document.createElement('a');
+        let url = URL.createObjectURL(blob);
+        link.href = url;
+        link.setAttribute('download', `ghadir_participants_${new Date().toLocaleDateString('fa-IR')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    function exportWinners() {
+        let winners = participants.filter(p => p.prize !== "پوچ" && p.prize !== "شانس مجدد");
+        if (winners.length === 0) {
+            alert('هنوز برنده ویژه‌ای وجود ندارد');
+            return;
+        }
+        let csv = '\uFEFFنام,نام خانوادگی,شماره موبایل,جایزه برنده,تاریخ\n';
+        winners.forEach(p => {
+            csv += `"${p.firstName}","${p.lastName}","${p.phone}","${p.prize}","${p.date}"\n`;
+        });
+        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        let link = document.createElement('a');
+        let url = URL.createObjectURL(blob);
+        link.href = url;
+        link.setAttribute('download', `ghadir_winners_${new Date().toLocaleDateString('fa-IR')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    function resetAllData() {
+        if (confirm('⚠️ هشدار! تمام اطلاعات شرکت‌کنندگان و جوایز پاک خواهد شد. ادامه می‌دهید؟')) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    // پنل ادمین با رمز
+    function showAdminLogin() {
+        let overlay = document.createElement('div');
+        overlay.className = 'login-overlay';
+        overlay.innerHTML = `
+            <div class="login-box">
+                <h3>ورود به پنل مدیریت</h3>
+                <input type="password" id="adminPass" placeholder="رمز عبور">
+                <br>
+                <button onclick="checkAdminPass()">ورود</button>
+                <button onclick="this.parentElement.parentElement.remove()">انصراف</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+
+    function checkAdminPass() {
+        let pass = document.getElementById('adminPass').value;
+        if (pass === "imamali1403") {
+            document.querySelector('.login-overlay').remove();
+            document.getElementById('adminPanel').classList.add('visible');
+            showMessage('به پنل مدیریت خوش آمدید', 'success');
+        } else {
+            alert('رمز عبور اشتباه است');
+        }
+    }
+
+    function hideAdminPanel() {
+        document.getElementById('adminPanel').classList.remove('visible');
+    }
+
+    createStars();
+    window.addEventListener('load', () => {
+        loadData();
+    });
+</script>
+</body>
+</html>
